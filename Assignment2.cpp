@@ -4,41 +4,70 @@
 #include<sstream>
 #include<map>
 using namespace std;
-void readFile(ifstream infile,string data);
-void setDateInFile(string data);
-void setDateOnShow(string data);
+
+
+
+
+void readfile(ifstream & infile, map<string, string> & smap);
+
+
 int main(){
+	 /* For example #Load wiboon.txt
+	 *  command ex. #Load #Set #Save
+	 *  data is argument after command
+	 */
 	string str,command, data;
-getline(cin,str);
-ifstream infile;
-		/* For example #Load wiboon.txt
-		command ex. #Load #Set #Save
-		data is argument after command*/
-	command	= str.substr(0,str.find(' '));
-	data	= str.substr(str.find(' ')+1);
+	string date;
+	ifstream infile;
+	
+	//key = date, value = messages which are matched with date.
+	map <string, string> smap;
+	
+	getline(cin, str);	
+		
 	cout << command << endl;
 	cout << data << endl;
-	if(command == "#Load"){readFile(infile,data);} 
-	//readFile will load file name(data) and get data in <map>.
-	else if(command == "#Set"){setDateInFile(data);setDateOnShow(data);}
-	/*setDateInFile is method will set date same as date in file.
-	 ex.  #Set12 01 2013	has set		string dateInFile 12012013
-	 setDateOnShow is method will set date on show content.
-	 ex. #Set12 01 2013	has set		string dateOnshow 12 December 2013*/	 
-	else if(command == "#Show"){}
-	else if(command == "#Edit"){}
-	else if(command == "#Save"){}
-	else if(command == "#Quit")
-return 0;
+	while(true){
+		if(smap.empty()){
+			if(command == "#Load"){
+				smap.clear();
+				infile.open(data.c_str());
+				if(infile.fail()) cout << "fail" << endl;
+				else readfile(infile, smap);
+			}
+			else{
+				cout << "no file in the buffer" << endl;
+			}
+		} else {
+			if(command == "#Load"){
+				smap.clear();
+				infile.open(data.c_str());
+				if(infile.fail()) cout << "fail" << endl;
+				else readfile(infile, smap);
+			}
+			else if(command == "Set"){
+				date == data;
+			}
+			else if(command == "#Show"){
+			}
+			else if(command == "#Edit"){
+			}
+			else if(command == "#Save"){
+			}
+			else{
+				cout << "Incorect Command" << endl;
+			}
+		}
+	}
+	return 0;
 }
 
-void readFile(ifstream infile,string data)
-{	
+void readfile(ifstream &infile, map<string, string> & smap){
 	string str;
-	map<string,string> smap;
-	infile.open(data);
-		while(infile!=EOF)
-		{
-			infile.getline(str,200)
-		}
+	
+	while(!infile.eof()){
+		getline(infile,str);
+		smap[str.substr(0,8)] = str.substr(9,91); 
+		cout << smap[str.substr(0,8)] << endl;
+	}
 }
