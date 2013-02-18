@@ -6,8 +6,6 @@
 using namespace std;
 
 
-
-
 void readfile(ifstream & infile, map<string, string> & smap);
 
 
@@ -23,12 +21,12 @@ int main(){
 	//key = date, value = messages which are matched with date.
 	map <string, string> smap;
 	
-	getline(cin, str);	
+
+	while(getline(cin, str)){
 	data = str.substr(str.find(' ')+1);
 	command = str.substr(0,str.find(' '));
 	cout << command << endl;
 	cout << data << endl;
-	while(true){
 		if(smap.empty()){
 			if(command == "#Load"){
 				smap.clear();
@@ -37,16 +35,18 @@ int main(){
 				else readfile(infile, smap);
 			}
 			else{
-				cout << "no file in the buffer" << endl;
+				cout <<  "Incorect Command" << endl;
 			}
 		} else {
 			if(command == "#Load"){
 				smap.clear();
+				infile.close();
 				infile.open(data.c_str());
-				if(infile.fail()) cout << "fail" << endl;
+				infile.seekg(ios::beg); // move cursor to begin of file.
+				if(infile.fail()) cout << "fail2" << endl;
 				else readfile(infile, smap);
 			}
-			else if(command == "Set"){
+			else if(command == "#Set"){
 				date == data;
 			}
 			else if(command == "#Show"){
@@ -65,7 +65,6 @@ int main(){
 
 void readfile(ifstream &infile, map<string, string> & smap){
 	string str;
-	
 	while(!infile.eof()){
 		getline(infile,str);
 		smap[str.substr(0,8)] = str.substr(9,91); 
