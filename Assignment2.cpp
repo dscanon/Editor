@@ -13,7 +13,7 @@ int main(){
 	 *  command ex. #Load #Set #Save
 	 *  data is argument after command
 	 */
-	string str, command, data, date, month ;
+	string str, command, data, date, month, numMonth  ;
 
 	ifstream infile;
 	
@@ -46,30 +46,24 @@ int main(){
 			else if(command == "#Set"){
 				date = data;
 				month = date.substr(date.find(' ')+1,date.rfind(' ')-date.find(' ')-1);
-				cout << month  << endl;
-					if(month=="January")		{month = "01";}
-					else if(month=="February")	{month = "02";}
-					else if(month=="March")		{month = "03";}
-					else if(month=="April")		{month = "04";}
-					else if(month=="May")		{month = "05";}
-					else if(month=="June")		{month = "06";}
-					else if(month=="July")		{month = "07";}
-					else if(month=="August")	{month = "08";}
-					else if(month=="September")	{month = "09";}
-					else if(month=="October")	{month = "10";}
-					else if(month=="November")	{month = "11";}
-					else if(month=="December")	{month = "12";}
-						cout << month << endl;
-						date = date.replace(date.find(' '),date.rfind(' ')-date.find(' ')+1,month);
-						cout << date <<endl;
+				numMonth = month;
+					if(month=="01")		{month = "January";}
+					else if(month=="02")	{month = "February";}
+					else if(month=="03")	{month = "March";}
+					else if(month=="04")	{month = "April";}
+					else if(month=="05")	{month = "May";}
+					else if(month=="06")	{month = "June";}
+					else if(month=="07")	{month = "July";}
+					else if(month=="08")	{month = "August";}
+					else if(month=="09")	{month = "September";}
+					else if(month=="10")	{month = "October";}
+					else if(month=="11")	{month = "November";}
+					else if(month=="12")	{month = "December";}
+					numMonth = date.replace(date.find(' '),date.rfind(' ')-date.find(' ')+1,numMonth);
 			}
 			else if(command == "#Show"){
-				if(showContent(smap,date)){
-					cout << smap[date] << endl;
-				}
-				else {
-					cout << "No date in file.";
-				}
+				if(showContent(smap,numMonth)){cout << smap[numMonth] << endl;}
+				else {cout << "No date in file.";}
 			}
 			else if(command == "#Edit"){
 			}
@@ -93,11 +87,11 @@ void readfile(ifstream &infile, map<string, string> & smap){
 }
 
 
-bool showContent(map<string, string> & smap, string date){
-	for(map<string, string>::iterator it=smap.begin();it!=smap.end();it++){
-		if((*it).first == date ){
-			return 1;
-		}
+bool showContent(map<string, string> & smap, string numDate){
+for(map<string, string>::iterator it=smap.begin();it!=smap.end();it++){
+					if((*it).first == numDate ){
+						return 1;
 	}
-return 0;
+}
+	return 0;
 }
