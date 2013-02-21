@@ -1,12 +1,15 @@
-#include<iostream>
-#include<fstream>
-#include<string>
-#include<sstream>
-#include<map>
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cctype>
+#include <map>
+#include "buffer.h"
 using namespace std;
 
 void readfile(ifstream & infile, map<string, string> & smap);
 bool showContent(map<string, string> & smap, string date);
+void executeCommand(EditorBuffer & buffer, string line, int &count);
 
 int main(){
 	 /* For example #Load wiboon.txt
@@ -14,8 +17,9 @@ int main(){
 	 *  data is argument after command
 	 */
 	string str, command, data, date, month, numMonth  ;
-
+	int count;
 	ifstream infile;
+	EditorBuffer buffer;
 	
 	//key = date, value = messages which are matched with date.
 	map <string, string> smap;
@@ -73,8 +77,23 @@ int main(){
 				else {cout << "No date in file.";}
 			}
 			else if(command == "#Edit"){
+				count = 1;
+				if(showContent(smap,numMonth)){cout << smap[numMonth] << endl;}
+				else {cout << "No date in file.";}
+				for (unsigned i = 0; i < smap[numMonth].length(); i++) {
+				buffer.insertCharacter(smap[numMonth][i]);
+				}
+						while (true) {
+						string cmd;
+						cout << "*";
+						getline(cin,cmd);
+						if (cmd != "") executeCommand(buffer, cmd, count);
+						buffer.showContents();
+						if(count==0)break;
+						}
 			}
 			else if(command == "#Save"){
+				buffer.showContents();
 			}
 			else{
 				cout << "Incorect Command" << endl;
@@ -102,3 +121,20 @@ for(map<string, string>::iterator it=smap.begin();it!=smap.end();it++){
 }
 	return 0;
 }
+
+
+void executeCommand(EditorBuffer & buffer, string line ,int &count) {
+	switch (toupper(line[0])) {
+case 'I': for (unsigned i = 1; i < line.length(); i++) {
+	buffer.insertCharacter(line[i]);
+		  }
+		  break;
+case 'D': buffer.deleteCharacter(); break;
+case 'F': buffer.moveCursorForward(); break;
+case 'B': buffer.moveCursorBackward(); break;
+case 'J': buffer.moveCursorToStart(); break;
+case 'E': buffer.moveCursorToEnd(); break;
+case 'Q': count = 0; break;
+default: cout << "Illegal command" << endl; break;
+	}
+} 
