@@ -5,6 +5,7 @@
 */
 #include <iostream>
 #include "buffer.h"
+#include <string>
 using namespace std;
 /*
 * Implementation notes: EditorBuffer constructor
@@ -110,4 +111,14 @@ void EditorBuffer::showContents() {
 		cout << " ";
 	}
 	cout << '^' << endl;
+}
+
+string EditorBuffer::str(){
+	std::string str;
+	Cell *cp = start->link;
+	while (cp != NULL) {
+		str += cp->ch; 
+		cp = cp->link;
+	}
+	return str;
 }
