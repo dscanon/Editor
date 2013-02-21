@@ -4,6 +4,7 @@
 */
 #ifndef _buffer_h
 #define _buffer_h
+#include <string>
 /*
 * Class: EditorBuffer
 * -------------------* This class represents an editor buffer, which maintains an ordered
@@ -63,6 +64,10 @@ void deleteCharacter();
 * position of the cursor.
 */
 void showContents();
+
+//return string in the buffer.
+std::string str();
+
 #include "bufferpriv.h"
 };
 #endif
